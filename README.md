@@ -1,5 +1,7 @@
 see: https://github.com/torhve/openresty-docker
 
+Requires redis. gestures.lua must be updated to point to redis db 
+
 
 to run:
 

@@ -18,14 +18,45 @@ if body then
 end
 
 
-vardump(ngx.req);
+ngx.req.read_body()
+local body, err = ngx.req.get_body_data()
+if not body then
+    ngx.say("failed to get post args: ", err)
+end
+ngx.say("body as string is " .. body);
+
+local args, err = ngx.req.get_post_args()
+if not args then
+    ngx.say("failed to get post args: ", err)
+    return
+end
+for key, val in pairs(args) do
+    if type(val) == "table" then
+        ngx.say(key, ": ", table.concat(val, ", "))
+    else
+        ngx.say(key, ": ", val)
+    end
+end
+
+local args, err = ngx.req.get_post_args();
  
 local wholerequest = ngx.var.request;
-ngx.say('request is: \n=====');
+ngx.say('request2 is: \n=====');
 ngx.print(wholerequest);
 ngx.say('\n======');
 local path = wholerequest:split(" ")[2]
 ngx.say("path is " .. path);
+
+ngx.say("body is " .. body);
+ngx.say("dumped val is ");
+local value=cjson.new().decode(body);
+ngx.say(value.foo)
+val = {true, {zzz = "yyy"}}
+json_text = cjson.encode(val)
+ngx.say("json text is " .. json_text)
+
+json_val = cjson.new().decode(json_text)
+ngx.say(vardump(json_val));
 -- ngx.say('res is ' .. res)
 -- local value=cjson.new().decode(res.body)
 -- ngx.print(value)
