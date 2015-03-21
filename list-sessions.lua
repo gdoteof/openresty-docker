@@ -32,19 +32,5 @@ local output =
   }
 }
 
-HRANDKEY = [[
-    local randkey = redis.call('srandmember', KEYS[1])
-    local val = redis.call('hget', KEYS[2], randkey)
-    return val
-]]
--- use like HRANDKEY set_with_keys hash_with_keys
-HRANDKEY2 = [[
-    
-    return redis.call('hget', KEYS[2], redis.call('srandmember', KEYS[1]))
-]]
-
--- output.data[0].id = red:eval(HRANDKEY2,2,"sessionids", "sessions")
 output.data[1].id = red:srandmember('sessionids')
---ngx.say(cjson.encode(output));
-
 ngx.say(cjson.encode(output));
