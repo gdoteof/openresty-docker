@@ -24,4 +24,13 @@ RUN    wget http://openresty.org/download/ngx_openresty-1.7.10.1.tar.gz \
   && rm -rf /ngx_openresty*
 
 EXPOSE 8080
+RUN mkdir -p /homeproj
+WORKDIR /homeproj
+ADD nginx.conf /homeproj/nginx.conf
+ADD list-sessions.lua /homeproj/list-sessions.lua
+ADD process-image.lua /homeproj/process-image.lua
+ADD utils.lua /homeproj/utils.lua
+
+RUN mkdir logs
+
 CMD /usr/local/openresty/nginx/sbin/nginx -p `pwd` -c nginx.conf
