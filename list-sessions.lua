@@ -4,7 +4,8 @@ local redis = require "resty.redis"
 local red = redis:new()
 local cjson = require "cjson"
 
-local ok, err = red:connect("172.17.0.48", 6379)
+local redishost = os.getenv("REDIS_HOST")
+local ok, err = red:connect(redishost, 6379)
 if not ok then
     ngx.say("failed to connect: ", err)
     return
